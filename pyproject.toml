@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paper-forge"
+version = "0.1.0"
+description = "Daily research screener that picks reproducible papers and forges reference implementations with honest reproduction reports."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "numpy>=1.24",
+  "pypdf>=4.0",
+  "tomli>=2.0; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+claude = ["anthropic>=0.70"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+forge = "paperforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+paperforge = ["references/*/*", "references/*/*/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
