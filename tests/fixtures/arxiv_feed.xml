@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/fixture</id>
+  <title>arXiv Query: search_query=cat:cs.LG</title>
+  <updated>2026-09-25T10:08:00Z</updated>
+  <opensearch:totalResults>3</opensearch:totalResults>
+  <entry>
+    <id>http://arxiv.org/abs/1412.6980v9</id>
+    <title>Adam: A Method for Stochastic
+      Optimization</title>
+    <updated>2017-01-30T01:27:54Z</updated>
+    <summary>We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments. The method is straightforward to implement, is computationally efficient, has little memory requirements.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-24T17:59:18Z</published>
+    <arxiv:comment>Published as a conference paper at ICLR 2015</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author><name>Diederik P. Kingma</name></author>
+    <author><name>Jimmy Ba</name></author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.00001v2</id>
+    <title>Scaling a 70B Parameter Language Model on 4096 H100 GPUs</title>
+    <updated>2026-09-24T10:00:00Z</updated>
+    <summary>We pretrain a 70 billion parameter LLM on 15T tokens of web-scale data using 4096 H100 GPUs for 2 million GPU hours.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-24T10:00:00Z</published>
+    <arxiv:doi>10.1234/example</arxiv:doi>
+    <arxiv:journal_ref>Journal of Examples 1 (2026)</arxiv:journal_ref>
+    <author><name>A. Author</name></author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.00002v1</id>
+    <title>An Old Paper</title>
+    <updated>2026-01-01T00:00:00Z</updated>
+    <summary>Outside the lookback window.</summary>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-01T00:00:00Z</published>
+    <author><name>B. Author</name></author>
+  </entry>
+</feed>
