@@ -26,7 +26,7 @@ forge = "paperforge.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-paperforge = ["references/*/*", "references/*/*/*"]
+paperforge = ["references/*/*", "references/*/*/*", "sandbox_guard/*.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
