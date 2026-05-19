@@ -1,0 +1,5 @@
+- Target, kinetic energy K(p) = p^T p / 2, trajectory length L = 150, stepsize eps ~ U(0.0104, 0.0156) and random-walk proposal sd ~ U(0.0176, 0.0264) follow Sec 3.3 exactly.
+- Neal ran 1000 HMC iterations and gave random-walk Metropolis 150 updates per iteration to equalise computation; we do the same (1000 x 150 RWM proposals).
+- Initial state: Neal does not state it; we start from a draw of the target distribution's scale (q = 0 would also work). Rejection rates are insensitive to this after burn-in; we discard no samples, as in the paper's plots.
+- Random seed is fixed (0). Measured across seeds 0-5, the HMC rejection rate ranged 0.119-0.148 (binomial sd over 1000 iterations is about 0.011) and the RWM rate 0.7497-0.7507; the 0.03 tolerance is roughly 3 sd.
+- The qualitative claim is checked by comparing the relative error of the estimated standard deviation of the coordinate with sd = 1.00.

@@ -1,0 +1,8 @@
+[
+  {"name": "hmc_rejection_rate", "kind": "numeric", "claimed": 0.13, "tolerance": 0.03,
+   "source": "Sec 3.3, 100-dimensional Gaussian: 'The rejection rate was 0.13 for HMC'"},
+  {"name": "rwm_rejection_rate", "kind": "numeric", "claimed": 0.75, "tolerance": 0.03,
+   "source": "Sec 3.3: '... and 0.75 for random-walk Metropolis'"},
+  {"name": "hmc_better_std_estimate_for_largest_sd", "kind": "qualitative", "claimed": true,
+   "source": "Sec 3.3 / Figure 7: HMC estimates of the largest-sd coordinate are far more accurate than random-walk Metropolis at equal computation"}
+]

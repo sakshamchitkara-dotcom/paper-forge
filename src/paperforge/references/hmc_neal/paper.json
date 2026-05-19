@@ -1,0 +1,7 @@
+{
+  "arxiv_id": "1206.1901",
+  "title": "MCMC using Hamiltonian dynamics",
+  "authors": ["Radford M. Neal"],
+  "published": "2012-06-09",
+  "reference_note": "Hand-written reference implementation by the paper-forge authors, written from the paper's description (Sections 2.3, 3.2, 3.3). No code from the paper or any other implementation was copied."
+}
