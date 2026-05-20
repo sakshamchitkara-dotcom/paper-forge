@@ -1,0 +1,7 @@
+{
+  "arxiv_id": "0909.4061",
+  "title": "Finding structure with randomness: Probabilistic algorithms for constructing approximate matrix decompositions",
+  "authors": ["Nathan Halko", "Per-Gunnar Martinsson", "Joel A. Tropp"],
+  "published": "2009-09-22",
+  "reference_note": "Hand-written reference implementation by the paper-forge authors, written from Algorithms 4.1, 4.3 and 5.1 and Theorems 1.1 / 10.6. No code from the paper or any other implementation was copied."
+}
