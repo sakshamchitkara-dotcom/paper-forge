@@ -1,0 +1,7 @@
+{
+  "arxiv_id": "1412.6980",
+  "title": "Adam: A Method for Stochastic Optimization",
+  "authors": ["Diederik P. Kingma", "Jimmy Ba"],
+  "published": "2014-12-22",
+  "reference_note": "Hand-written reference implementation by the paper-forge authors, written from Algorithm 1 and Section 6.1. No code from the paper or any other implementation was copied."
+}
