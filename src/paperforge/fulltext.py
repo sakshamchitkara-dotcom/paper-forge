@@ -10,6 +10,7 @@ from . import http
 from .models import Paper
 
 log = logging.getLogger(__name__)
+logging.getLogger("pypdf").setLevel(logging.ERROR)  # font-encoding warnings are noise here
 _SKIP = {"script", "style", "nav", "header", "footer", "button"}
 _BLOCK = {"p", "div", "section", "h1", "h2", "h3", "h4", "li", "tr", "br", "figcaption", "table"}
 
