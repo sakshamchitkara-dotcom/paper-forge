@@ -36,3 +36,31 @@ def test_client_rate_limit_and_lookback(feed_xml, monkeypatch):
     assert "search_query=cat%3Acs.LG" in urls[0]
     assert "sortBy=submittedDate" in urls[0]
     assert len(sleeps) == 1 and 2.5 < sleeps[0] <= 3.0  # second call waited ~3s
+
+
+def test_client_retries_transient_http_errors(feed_xml, monkeypatch):
+    import urllib.error
+
+    monkeypatch.setattr("paperforge.arxiv.time.sleep", lambda s: None)
+    calls = []
+
+    def flaky(url):
+        calls.append(url)
+        if len(calls) < 3:
+            raise urllib.error.HTTPError(url, 406, "Not Acceptable", {}, None)
+        return feed_xml
+
+    assert len(ArxivClient(opener=flaky).query("cat:cs.LG")) == 3
+    assert len(calls) == 3
+
+
+def test_client_does_not_retry_client_errors(monkeypatch):
+    import urllib.error
+
+    import pytest
+
+    def bad(url):
+        raise urllib.error.HTTPError(url, 400, "Bad Request", {}, None)
+
+    with pytest.raises(urllib.error.HTTPError):
+        ArxivClient(opener=bad, delay_s=0).query("x")

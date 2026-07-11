@@ -5,8 +5,10 @@ arXiv asks API users to wait 3 seconds between calls; `ArxivClient` enforces tha
 
 from __future__ import annotations
 
+import logging
 import re
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -14,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 
 from .models import Paper
 
+log = logging.getLogger(__name__)
 API_URL = "https://export.arxiv.org/api/query"
 USER_AGENT = "paper-forge/0.1 (+https://github.com/sakshamchitkara-dotcom/paper-forge)"
 NS = {
@@ -56,8 +59,9 @@ def parse_feed(xml_text: str) -> list[Paper]:
 
 
 class ArxivClient:
-    def __init__(self, delay_s: float = 3.0, timeout_s: float = 30.0, opener=None):
+    def __init__(self, delay_s: float = 3.0, timeout_s: float = 30.0, opener=None, retries: int = 3):
         self.delay_s = delay_s
+        self.retries = retries
         self.timeout_s = timeout_s
         self._last = 0.0
         self._open = opener or self._urlopen
@@ -68,13 +72,21 @@ class ArxivClient:
             return r.read().decode("utf-8")
 
     def _get(self, params: dict) -> str:
-        wait = self.delay_s - (time.monotonic() - self._last)
-        if wait > 0:
-            time.sleep(wait)
-        try:
-            return self._open(API_URL + "?" + urllib.parse.urlencode(params))
-        finally:
-            self._last = time.monotonic()
+        url = API_URL + "?" + urllib.parse.urlencode(params)
+        for attempt in range(self.retries + 1):
+            wait = self.delay_s * (2 ** attempt) - (time.monotonic() - self._last)
+            if wait > 0:
+                time.sleep(wait)
+            try:
+                return self._open(url)
+            except urllib.error.HTTPError as e:
+                # arXiv intermittently answers 406/429/503 under load; back off and retry
+                if e.code not in (406, 429, 500, 502, 503) or attempt == self.retries:
+                    raise
+                log.info("arXiv HTTP %s, retrying (%d/%d)", e.code, attempt + 1, self.retries)
+            finally:
+                self._last = time.monotonic()
+        raise AssertionError("unreachable")
 
     def query(self, search_query: str = "", id_list: list[str] | None = None,
               max_results: int = 50, start: int = 0) -> list[Paper]:
