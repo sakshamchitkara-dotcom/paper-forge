@@ -67,7 +67,7 @@ class ArxivClient:
         self._open = opener or self._urlopen
 
     def _urlopen(self, url: str) -> str:
-        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/atom+xml"})
         with urllib.request.urlopen(req, timeout=self.timeout_s) as r:
             return r.read().decode("utf-8")
 
