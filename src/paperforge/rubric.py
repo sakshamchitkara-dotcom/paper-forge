@@ -84,8 +84,11 @@ def score_paper(paper: Paper, weights: dict, keywords: list[str], fulltext: str 
     c["compute"] = Criterion(s, weights["compute"], ev)
     s, ev = _apply(text, 0.4, DATA)
     c["data"] = Criterion(s, weights["data"], ev)
-    s, ev = _apply(rich, 0.4, CLARITY)
-    c["clarity"] = Criterion(s, weights["clarity"], ev)
+    # positive signals may come from the full text; "this is a survey/framework" only from
+    # title/abstract, since nearly every full text mentions surveys in related work
+    s, ev = _apply(rich, 0.4, [r for r in CLARITY if r[1] > 0])
+    s2, ev2 = _apply(text, s, [r for r in CLARITY if r[1] < 0])
+    c["clarity"] = Criterion(s2, weights["clarity"], ev + ev2)
 
     if paper.code_url:
         c["code"] = Criterion(1.0, weights["code"], [f"+ code: {paper.code_url}"])
