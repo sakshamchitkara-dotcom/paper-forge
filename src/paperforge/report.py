@@ -47,6 +47,8 @@ def _page(title: str, body: str, depth: int = 0) -> str:
     up = "../" * depth
     return (f"<!doctype html><html lang=en><head><meta charset=utf-8>"
             f"<meta name=viewport content='width=device-width,initial-scale=1'>"
+            f"<link rel=icon href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22>"
+            f"<rect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%232f5d8a%22/></svg>'>"
             f"<title>{escape(title)}</title><style>{CSS}</style></head><body><main>"
             f"<nav><a href='{up}index.html'>paper-forge</a><a href='{up}leaderboard.html'>Leaderboard</a></nav>"
             f"{body}</main></body></html>")
@@ -54,6 +56,10 @@ def _page(title: str, body: str, depth: int = 0) -> str:
 
 def _badge(status: str) -> str:
     return f"<span class='badge s-{status}'>{escape(STATUS_LABEL.get(status, status))}</span>"
+
+
+def _backend(b: str) -> str:
+    return "scripted (hand-written reference)" if b == "scripted" else f"{b} (generated)"
 
 
 def _fmt(v) -> str:
@@ -158,7 +164,7 @@ def write_daily(site: Path, day: str, screened: list[dict], runs: list[dict]) ->
     for run in runs:
         res = run["results"]
         md.append(f"- **{STATUS_LABEL.get(run['status'], run['status'])}** — [{res['paper']['title']}]"
-                  f"({res['paper']['url']}) ({run['backend']}) → [details](../papers/{run['arxiv_id']}/README.md)")
+                  f"({res['paper']['url']}) ({_backend(run['backend'])}) → [details](../papers/{run['arxiv_id']}/README.md)")
     if not runs:
         md.append("- none today (reimplementation is opt-in: `forge daily --reimplement`)")
     md += ["", "## Top candidates", ""]
@@ -179,7 +185,7 @@ def write_daily(site: Path, day: str, screened: list[dict], runs: list[dict]) ->
     runs_html = "".join(
         f"<tr><td>{_badge(r['status'])}</td><td><a href='../papers/{r['arxiv_id']}/index.html'>"
         f"{escape(r['results']['paper']['title'])}</a> <span class=muted>{r['arxiv_id']}</span></td>"
-        f"<td>{r['backend']}</td><td class=num>{sum(c['verdict'] == 'match' for c in r['results']['comparisons'])}"
+        f"<td>{_backend(r['backend'])}</td><td class=num>{sum(c['verdict'] == 'match' for c in r['results']['comparisons'])}"
         f"/{len(r['results']['comparisons'])}</td></tr>" for r in runs) or \
         "<tr><td colspan=4 class=muted>No reproduction runs today (opt-in).</td></tr>"
     cards = []
@@ -220,13 +226,13 @@ def write_leaderboard(site: Path, runs: list[dict]) -> None:
         res = r["results"]
         m = sum(c["verdict"] == "match" for c in res["comparisons"])
         md.append(f"| {STATUS_LABEL.get(r['status'], r['status'])} | [{res['paper']['title']}]({res['paper']['url']}) "
-                  f"| {r['backend']} | {m}/{len(res['comparisons'])} | {_fmt(res['tests_passed'])} | {r['day']} |")
+                  f"| {_backend(r['backend'])} | {m}/{len(res['comparisons'])} | {_fmt(res['tests_passed'])} | {r['day']} |")
     site.mkdir(parents=True, exist_ok=True)
     (site / "leaderboard.md").write_text("\n".join(md))
     rows = "".join(
         f"<tr><td>{_badge(r['status'])}</td><td><a href='papers/{r['arxiv_id']}/index.html'>"
         f"{escape(r['results']['paper']['title'])}</a> <span class=muted>arXiv:{r['arxiv_id']}</span></td>"
-        f"<td>{r['backend']}</td><td class=num>{sum(c['verdict'] == 'match' for c in r['results']['comparisons'])}"
+        f"<td>{_backend(r['backend'])}</td><td class=num>{sum(c['verdict'] == 'match' for c in r['results']['comparisons'])}"
         f"/{len(r['results']['comparisons'])}</td><td>{_fmt(r['results']['tests_passed'])}</td><td>{r['day']}</td></tr>"
         for r in runs) or "<tr><td colspan=6 class=muted>no runs yet</td></tr>"
     body = ("<h1>Reproduction leaderboard</h1><p class=muted>Latest run per paper and backend. Status is computed from "
