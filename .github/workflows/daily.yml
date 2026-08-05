@@ -1,0 +1,66 @@
+name: daily
+
+# Screen-only by default. Reimplementation with the Claude backend is opt-in because it
+# spends API tokens: run manually with reimplement=true, or set the repository variable
+# FORGE_REIMPLEMENT=true (requires the ANTHROPIC_API_KEY secret).
+on:
+  schedule:
+    - cron: "30 6 * * 1-5"   # arXiv announces new papers Sun-Thu evenings (US Eastern)
+  workflow_dispatch:
+    inputs:
+      reimplement:
+        description: "Also reimplement top candidates with Claude (costs tokens)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  forge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[claude]"
+
+      # sqlite state for cross-day dedupe. ponytail: Actions cache is evicted after 7 days
+      # without use; move the db to a data branch or release asset if runs become sparse.
+      - uses: actions/cache@v4
+        with:
+          path: data
+          key: forge-db-${{ github.run_id }}
+          restore-keys: forge-db-
+
+      - name: Screen (and optionally reimplement)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REIMPLEMENT: ${{ inputs.reimplement || vars.FORGE_REIMPLEMENT == 'true' }}
+        run: |
+          if [ "$REIMPLEMENT" = "true" ]; then
+            forge -v daily --reimplement --backend claude
+          else
+            forge -v daily
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: forge
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
