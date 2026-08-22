@@ -1,0 +1,15 @@
+$ python -m pytest -q -p no:cacheprovider
+..                                                                       [100%]
+2 passed in 0.08s
+
+
+$ python experiment.py
+{
+  "hmc_rejection_rate": 0.14800000000000002,
+  "rwm_rejection_rate": 0.7501533333333333,
+  "hmc_sd_estimate_largest": 1.0046435380791305,
+  "rwm_sd_estimate_largest": 0.9561417973425974,
+  "hmc_better_std_estimate_for_largest_sd": true
+}
+
+

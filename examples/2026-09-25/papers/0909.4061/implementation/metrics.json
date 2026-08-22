@@ -1,0 +1,9 @@
+{
+  "sigma_k_plus_1": 0.30151134457776363,
+  "mean_error_q0": 0.5662958099554689,
+  "mean_error_q1": 0.3116816709976193,
+  "mean_error_over_thm1_1_bound": 0.027587168959599496,
+  "mean_error_over_thm10_6_bound": 0.12219932855204109,
+  "max_error_over_eq1_9_bound": 0.003240993367230665,
+  "power_iteration_reduces_error": true
+}

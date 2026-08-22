@@ -1,0 +1,25 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><link rel=icon href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%232f5d8a%22/></svg>'><title>paper-forge leaderboard</title><style>
+:root{--bg:#fbfbf8;--fg:#1d1d1b;--muted:#6b6b66;--line:#e2e1dc;--card:#fff;--accent:#2f5d8a;
+--ok:#1f7a4d;--warn:#9a6700;--bad:#b42318;--na:#6b6b66}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe6;--muted:#9d9c95;--line:#33332f;
+--card:#1e1e1c;--accent:#8db7e0;--ok:#5cc28f;--warn:#e0b24f;--bad:#f07c72;--na:#9d9c95}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1080px;margin:0 auto;padding:28px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:18px;margin:32px 0 10px}
+a{color:var(--accent)}.muted{color:var(--muted)}nav{margin-bottom:20px;font-size:14px}
+nav a{margin-right:14px}.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card)}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+td.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;
+border:1px solid currentColor;white-space:nowrap}
+.s-reproduced,.v-match{color:var(--ok)}.s-partial{color:var(--warn)}
+.s-not_reproduced,.s-failed,.v-mismatch{color:var(--bad)}.s-unverified,.v-missing{color:var(--na)}
+.ev{font-size:12px;color:var(--muted)}code,pre{font:12.5px ui-monospace,Menlo,monospace}
+pre{background:var(--card);border:1px solid var(--line);padding:10px;overflow-x:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);padding:12px}
+.card b{display:block;font-size:22px}
+</style></head><body><main><nav><a href='index.html'>paper-forge</a><a href='leaderboard.html'>Leaderboard</a></nav><h1>Reproduction leaderboard</h1><p class=muted>Latest run per paper and backend. Status is computed from metrics the sandboxed experiment actually wrote.</p><div class=scroll><table><tr><th>status</th><th>paper</th><th>backend</th><th>claims</th><th>tests</th><th>last run</th></tr><tr><td><span class='badge s-reproduced'>Reproduced</span></td><td><a href='papers/0909.4061/index.html'>Finding structure with randomness: Probabilistic algorithms for constructing approximate matrix decompositions</a> <span class=muted>arXiv:0909.4061</span></td><td>scripted (hand-written reference)</td><td class=num>4/4</td><td>True</td><td>2026-09-25</td></tr><tr><td><span class='badge s-reproduced'>Reproduced</span></td><td><a href='papers/1206.1901/index.html'>MCMC using Hamiltonian dynamics</a> <span class=muted>arXiv:1206.1901</span></td><td>scripted (hand-written reference)</td><td class=num>3/3</td><td>True</td><td>2026-09-25</td></tr><tr><td><span class='badge s-reproduced'>Reproduced</span></td><td><a href='papers/1412.6980/index.html'>Adam: A Method for Stochastic Optimization</a> <span class=muted>arXiv:1412.6980</span></td><td>scripted (hand-written reference)</td><td class=num>2/2</td><td>True</td><td>2026-09-25</td></tr></table></div></main></body></html>
