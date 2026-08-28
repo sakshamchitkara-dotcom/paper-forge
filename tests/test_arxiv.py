@@ -64,3 +64,29 @@ def test_client_does_not_retry_client_errors(monkeypatch):
 
     with pytest.raises(urllib.error.HTTPError):
         ArxivClient(opener=bad, delay_s=0).query("x")
+
+
+def test_retry_honours_retry_after_header(feed_xml, monkeypatch):
+    import urllib.error
+
+    sleeps, calls = [], []
+    monkeypatch.setattr("paperforge.arxiv.time.sleep", sleeps.append)
+
+    def limited(url):
+        calls.append(url)
+        if len(calls) == 1:
+            raise urllib.error.HTTPError(url, 503, "busy", {"Retry-After": "20"}, None)
+        return feed_xml
+
+    ArxivClient(opener=limited, delay_s=3.0).query("cat:cs.LG")
+    assert sleeps and 19 < sleeps[-1] <= 20  # waited what arXiv asked, not the 6s backoff
+
+
+def test_user_agent_carries_version_and_contact(monkeypatch):
+    from paperforge import __version__
+    from paperforge.arxiv import user_agent
+
+    monkeypatch.delenv("FORGE_CONTACT", raising=False)
+    assert user_agent().startswith(f"paper-forge/{__version__} (+https://github.com/")
+    monkeypatch.setenv("FORGE_CONTACT", "ops@example.org")
+    assert user_agent().endswith("; mailto:ops@example.org)")

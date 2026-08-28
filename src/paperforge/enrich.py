@@ -67,7 +67,7 @@ def fetch_citations(papers: list[Paper], poster=None, retries: int = 2) -> None:
     import json
     import urllib.request
 
-    headers = {"Content-Type": "application/json", "User-Agent": http.USER_AGENT}
+    headers = {"Content-Type": "application/json", "User-Agent": http.user_agent()}
     if key := os.environ.get("SEMANTIC_SCHOLAR_API_KEY"):
         headers["x-api-key"] = key
 

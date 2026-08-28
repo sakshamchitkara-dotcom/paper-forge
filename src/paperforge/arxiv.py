@@ -6,6 +6,7 @@ arXiv asks API users to wait 3 seconds between calls; `ArxivClient` enforces tha
 from __future__ import annotations
 
 import logging
+import os
 import re
 import time
 import urllib.error
@@ -14,11 +15,23 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 
+from . import __version__
 from .models import Paper
 
 log = logging.getLogger(__name__)
 API_URL = "https://export.arxiv.org/api/query"
-USER_AGENT = "paper-forge/0.1 (+https://github.com/sakshamchitkara-dotcom/paper-forge)"
+REPO_URL = "https://github.com/sakshamchitkara-dotcom/paper-forge"
+
+
+def user_agent(contact: str | None = None) -> str:
+    """arXiv asks automated clients to identify themselves with a way to reach the operator.
+
+    Set FORGE_CONTACT (an email address) so arXiv can reach whoever runs this instance
+    instead of the project repo.
+    """
+    contact = contact if contact is not None else os.environ.get("FORGE_CONTACT", "").strip()
+    return f"paper-forge/{__version__} (+{REPO_URL}" + (f"; mailto:{contact})" if contact else ")")
+
 NS = {
     "a": "http://www.w3.org/2005/Atom",
     "arxiv": "http://arxiv.org/schemas/atom",
@@ -67,14 +80,15 @@ class ArxivClient:
         self._open = opener or self._urlopen
 
     def _urlopen(self, url: str) -> str:
-        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/atom+xml"})
+        req = urllib.request.Request(url, headers={"User-Agent": user_agent(), "Accept": "application/atom+xml"})
         with urllib.request.urlopen(req, timeout=self.timeout_s) as r:
             return r.read().decode("utf-8")
 
     def _get(self, params: dict) -> str:
         url = API_URL + "?" + urllib.parse.urlencode(params)
+        retry_after = 0.0
         for attempt in range(self.retries + 1):
-            wait = self.delay_s * (2 ** attempt) - (time.monotonic() - self._last)
+            wait = max(self.delay_s * (2 ** attempt), retry_after) - (time.monotonic() - self._last)
             if wait > 0:
                 time.sleep(wait)
             try:
@@ -83,6 +97,7 @@ class ArxivClient:
                 # arXiv intermittently answers 406/429/503 under load; back off and retry
                 if e.code not in (406, 429, 500, 502, 503) or attempt == self.retries:
                     raise
+                retry_after = _retry_after(e)
                 log.info("arXiv HTTP %s, retrying (%d/%d)", e.code, attempt + 1, self.retries)
             finally:
                 self._last = time.monotonic()
@@ -108,6 +123,14 @@ class ArxivClient:
         cutoff = now - timedelta(days=lookback_days)
         papers = self.query(f"cat:{category}", max_results=max_results)
         return [p for p in papers if _parse_ts(p.published) >= cutoff]
+
+
+def _retry_after(e: urllib.error.HTTPError, cap: float = 120.0) -> float:
+    """Seconds from a numeric Retry-After header (0 if absent or an HTTP date), capped."""
+    try:
+        return min(float((e.headers or {}).get("Retry-After", 0)), cap)
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def _parse_ts(s: str) -> datetime:
