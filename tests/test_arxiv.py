@@ -90,3 +90,19 @@ def test_user_agent_carries_version_and_contact(monkeypatch):
     assert user_agent().startswith(f"paper-forge/{__version__} (+https://github.com/")
     monkeypatch.setenv("FORGE_CONTACT", "ops@example.org")
     assert user_agent().endswith("; mailto:ops@example.org)")
+
+
+def test_parse_listing_keeps_first_announcements_only():
+    from pathlib import Path
+
+    from paperforge.arxiv import parse_listing
+
+    papers = parse_listing((Path(__file__).parent / "fixtures" / "arxiv_rss.xml").read_text())
+    assert [p.arxiv_id for p in papers] == ["2609.28553"]  # v3 cross-list and replacement dropped
+    p = papers[0]
+    assert p.title.startswith("SMILESGNN") and p.version == "v1"
+    assert p.abstract.startswith("Drug toxicity prediction")  # announce preamble stripped
+    assert p.authors[:2] == ["Quang Minh Nguyen", "Thuy Quynh Nguyen"] and len(p.authors) == 6
+    assert p.categories == ["cs.LG", "cs.AI"]
+    assert p.doi == "10.1109/MAPR72750.2026.11685822" and p.journal_ref.startswith("2026 International")
+    assert p.published.startswith("2026-09-25") and p.sources == ["arxiv-listing"]

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2005/Atom" xml:lang="en-us">
+  <id>http://rss.arxiv.org/atom/cs.LG</id>
+  <title>cs.LG updates on arXiv.org</title>
+  <updated>2026-09-25T04:00:11.600500+00:00</updated>
+  <link href="http://rss.arxiv.org/atom/cs.LG" rel="self" type="application/atom+xml"/>
+  <subtitle>cs.LG updates on the arXiv.org e-print archive.</subtitle>
+    <entry>
+    <id>oai:arXiv.org:2609.28553v1</id>
+    <title>SMILESGNN: Interpretable Clinical Toxicity Prediction via SMILES-Graph Cross-Attention Fusion</title>
+    <updated>2026-09-25T04:00:11.600680+00:00</updated>
+    <link href="https://arxiv.org/abs/2609.28553" rel="alternate" type="text/html"/>
+    <summary>arXiv:2609.28553v1 Announce Type: new 
+Abstract: Drug toxicity prediction is critical for reducing late-stage attrition in drug discovery, yet remains challenging due to severe class imbalance, scaffold-based generalization, and the clinical need for interpretable predictions.</summary>
+    <category term="cs.LG"/>
+    <category term="cs.AI"/>
+    <published>2026-09-25T00:00:00-04:00</published>
+    <arxiv:announce_type>new</arxiv:announce_type>
+    <dc:rights>http://creativecommons.org/licenses/by/4.0/</dc:rights>
+    <arxiv:journal_reference>2026 International Conference on Multimedia Analysis and Pattern Recognition (MAPR)</arxiv:journal_reference>
+    <arxiv:DOI>10.1109/MAPR72750.2026.11685822</arxiv:DOI>
+    <dc:creator>Quang Minh Nguyen, Thuy Quynh Nguyen, Duc Minh Le, Ho Nhat Minh Nguyen, Thanh Long Dai Doan, Trong Nghia Nguyen</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2402.10149v3</id>
+    <title>Reconstructing short-lived particles using hypergraph representation learning</title>
+    <updated>2026-09-25T04:00:11.609040+00:00</updated>
+    <link href="https://arxiv.org/abs/2402.10149" rel="alternate" type="text/html"/>
+    <summary>arXiv:2402.10149v3 Announce Type: cross 
+Abstract: In collider experiments, the kinematic reconstruction of heavy, short-lived particles is vital for precision tests of the Standard Model and in searches for physics beyond it.</summary>
+    <category term="hep-ph"/>
+    <category term="cs.LG"/>
+    <category term="hep-ex"/>
+    <published>2026-09-25T00:00:00-04:00</published>
+    <arxiv:announce_type>cross</arxiv:announce_type>
+    <dc:rights>http://creativecommons.org/licenses/by/4.0/</dc:rights>
+    <arxiv:DOI>10.1103/PhysRevD.111.032004</arxiv:DOI>
+    <dc:creator>Callum Birch-Sykes, Brian Le, Yvonne Peters, Ethan Simpson, Zihan Zhang</dc:creator>
+  </entry>
+  <entry>
+    <id>oai:arXiv.org:2401.08875v3</id>
+    <title>DCRMTA: Deep Causal Representation Learning for Multi-Touch Attribution</title>
+    <updated>2026-09-25T04:00:11.616280+00:00</updated>
+    <link href="https://arxiv.org/abs/2401.08875" rel="alternate" type="text/html"/>
+    <summary>arXiv:2401.08875v3 Announce Type: replace 
+Abstract: Multi-touch attribution (MTA) is essential for estimating the contribution of individual advertising touchpoints to user conversions.</summary>
+    <category term="cs.LG"/>
+    <category term="cs.AI"/>
+    <category term="stat.ME"/>
+    <published>2026-09-25T00:00:00-04:00</published>
+    <arxiv:announce_type>replace</arxiv:announce_type>
+    <dc:rights>http://arxiv.org/licenses/nonexclusive-distrib/1.0/</dc:rights>
+    <dc:creator>Jiaming Tang, Jingxuan Wen, Liping Jing</dc:creator>
+  </entry>
+</feed>
