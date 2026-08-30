@@ -10,7 +10,7 @@ CFG = {"sandbox": "subprocess", "timeout_s": 120, "max_iterations": 3}
 
 def test_references_are_labeled_and_complete():
     refs = list_references()
-    assert set(refs) == {"1206.1901", "0909.4061", "1412.6980"}
+    assert set(refs) == {"1206.1901", "0909.4061", "1412.6980", "2010.09649"}
     for r in refs.values():
         assert "Hand-written reference implementation" in r["reference_note"]
         assert (r["dir"] / "claims.json").exists() and (r["dir"] / "fidelity.md").exists()
@@ -19,7 +19,7 @@ def test_references_are_labeled_and_complete():
             assert c["source"], "every claim cites where it comes from"
 
 
-@pytest.mark.parametrize("arxiv_id", ["0909.4061", "1206.1901", "1412.6980"])
+@pytest.mark.parametrize("arxiv_id", ["0909.4061", "1206.1901", "1412.6980", "2010.09649"])
 def test_scripted_end_to_end(tmp_path, arxiv_id):
     res = run_scripted(arxiv_id, tmp_path, CFG)
     assert res["tests_passed"] is True and res["metrics"]

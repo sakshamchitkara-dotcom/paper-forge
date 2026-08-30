@@ -1,0 +1,7 @@
+{
+  "arxiv_id": "2010.09649",
+  "title": "Hutch++: Optimal Stochastic Trace Estimation",
+  "authors": ["Raphael A. Meyer", "Cameron Musco", "Christopher Musco", "David P. Woodruff"],
+  "published": "2020-10-19",
+  "reference_note": "Hand-written reference implementation by the paper-forge authors, written from the paper's description (Algorithms 1 and 2, Sec 6 and 6.1). No code from the paper's repository or any other implementation was copied."
+}
