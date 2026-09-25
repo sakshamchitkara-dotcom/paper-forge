@@ -1,0 +1,83 @@
+{
+  "paper": {
+    "arxiv_id": "1206.1901",
+    "title": "MCMC using Hamiltonian dynamics",
+    "url": "https://arxiv.org/abs/1206.1901"
+  },
+  "backend": "scripted",
+  "status": "reproduced",
+  "tests_passed": true,
+  "metrics": {
+    "hmc_rejection_rate": 0.14800000000000002,
+    "rwm_rejection_rate": 0.7501533333333333,
+    "hmc_sd_estimate_largest": 1.0046435380791305,
+    "rwm_sd_estimate_largest": 0.9561417973425974,
+    "hmc_better_std_estimate_for_largest_sd": true
+  },
+  "comparisons": [
+    {
+      "name": "hmc_rejection_rate",
+      "kind": "numeric",
+      "claimed": 0.13,
+      "reproduced": 0.14800000000000002,
+      "tolerance": 0.03,
+      "verdict": "match",
+      "source": "Sec 3.3, 100-dimensional Gaussian: 'The rejection rate was 0.13 for HMC'"
+    },
+    {
+      "name": "rwm_rejection_rate",
+      "kind": "numeric",
+      "claimed": 0.75,
+      "reproduced": 0.7501533333333333,
+      "tolerance": 0.03,
+      "verdict": "match",
+      "source": "Sec 3.3: '... and 0.75 for random-walk Metropolis'"
+    },
+    {
+      "name": "hmc_better_std_estimate_for_largest_sd",
+      "kind": "qualitative",
+      "claimed": true,
+      "reproduced": true,
+      "tolerance": null,
+      "verdict": "match",
+      "source": "Sec 3.3 / Figure 7: HMC estimates of the largest-sd coordinate are far more accurate than random-walk Metropolis at equal computation"
+    }
+  ],
+  "attempts": 1,
+  "sandbox": "docker",
+  "runtime_s": 1.157,
+  "error": null,
+  "notes": [
+    "Hand-written reference implementation by the paper-forge authors, written from the paper's description (Sections 2.3, 3.2, 3.3). No code from the paper or any other implementation was copied."
+  ],
+  "generated_at": "2026-09-25T10:27:59+00:00",
+  "claims": [
+    {
+      "name": "hmc_rejection_rate",
+      "kind": "numeric",
+      "claimed": 0.13,
+      "tolerance": 0.03,
+      "source": "Sec 3.3, 100-dimensional Gaussian: 'The rejection rate was 0.13 for HMC'"
+    },
+    {
+      "name": "rwm_rejection_rate",
+      "kind": "numeric",
+      "claimed": 0.75,
+      "tolerance": 0.03,
+      "source": "Sec 3.3: '... and 0.75 for random-walk Metropolis'"
+    },
+    {
+      "name": "hmc_better_std_estimate_for_largest_sd",
+      "kind": "qualitative",
+      "claimed": true,
+      "source": "Sec 3.3 / Figure 7: HMC estimates of the largest-sd coordinate are far more accurate than random-walk Metropolis at equal computation"
+    }
+  ],
+  "fidelity_notes": [
+    "- Target, kinetic energy K(p) = p^T p / 2, trajectory length L = 150, stepsize eps ~ U(0.0104, 0.0156) and random-walk proposal sd ~ U(0.0176, 0.0264) follow Sec 3.3 exactly.",
+    "- Neal ran 1000 HMC iterations and gave random-walk Metropolis 150 updates per iteration to equalise computation; we do the same (1000 x 150 RWM proposals).",
+    "- Initial state: Neal does not state it; we start from a draw of the target distribution's scale (q = 0 would also work). Rejection rates are insensitive to this after burn-in; we discard no samples, as in the paper's plots.",
+    "- Random seed is fixed (0). Measured across seeds 0-5, the HMC rejection rate ranged 0.119-0.148 (binomial sd over 1000 iterations is about 0.011) and the RWM rate 0.7497-0.7507; the 0.03 tolerance is roughly 3 sd.",
+    "- The qualitative claim is checked by comparing the relative error of the estimated standard deviation of the coordinate with sd = 1.00."
+  ]
+}

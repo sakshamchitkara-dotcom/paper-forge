@@ -1,0 +1,97 @@
+{
+  "paper": {
+    "arxiv_id": "0909.4061",
+    "title": "Finding structure with randomness: Probabilistic algorithms for constructing approximate matrix decompositions",
+    "url": "https://arxiv.org/abs/0909.4061"
+  },
+  "backend": "scripted",
+  "status": "reproduced",
+  "tests_passed": true,
+  "metrics": {
+    "sigma_k_plus_1": 0.30151134457776363,
+    "mean_error_q0": 0.5662958099554689,
+    "mean_error_q1": 0.3116816709976193,
+    "mean_error_over_thm1_1_bound": 0.027587168959599496,
+    "mean_error_over_thm10_6_bound": 0.12219932855204109,
+    "max_error_over_eq1_9_bound": 0.003240993367230665,
+    "power_iteration_reduces_error": true
+  },
+  "comparisons": [
+    {
+      "name": "mean_error_over_thm1_1_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "reproduced": 0.027587168959599496,
+      "tolerance": null,
+      "verdict": "match",
+      "source": "Theorem 1.1, eq. (1.8): E||A - QQ*A|| <= [1 + 4 sqrt(k+p)/(p-1) sqrt(min(m,n))] sigma_{k+1}"
+    },
+    {
+      "name": "mean_error_over_thm10_6_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "reproduced": 0.12219932855204109,
+      "tolerance": null,
+      "verdict": "match",
+      "source": "Theorem 10.6 (average spectral error): E||(I-P_Y)A|| <= (1 + sqrt(k/(p-1))) sigma_{k+1} + e sqrt(k+p)/p (sum_{j>k} sigma_j^2)^{1/2}"
+    },
+    {
+      "name": "max_error_over_eq1_9_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "reproduced": 0.003240993367230665,
+      "tolerance": null,
+      "verdict": "match",
+      "source": "eq. (1.9): ||A - QQ*A|| <= [1 + 11 sqrt(k+p) sqrt(min(m,n))] sigma_{k+1} with probability >= 1 - 6 p^-p"
+    },
+    {
+      "name": "power_iteration_reduces_error",
+      "kind": "qualitative",
+      "claimed": true,
+      "reproduced": true,
+      "tolerance": null,
+      "verdict": "match",
+      "source": "Sec 4.5 / 10.4: the power scheme (Algorithm 4.3) with q >= 1 reduces the error when singular values decay slowly"
+    }
+  ],
+  "attempts": 1,
+  "sandbox": "docker",
+  "runtime_s": 4.147,
+  "error": null,
+  "notes": [
+    "Hand-written reference implementation by the paper-forge authors, written from Algorithms 4.1, 4.3 and 5.1 and Theorems 1.1 / 10.6. No code from the paper or any other implementation was copied."
+  ],
+  "generated_at": "2026-09-25T10:28:04+00:00",
+  "claims": [
+    {
+      "name": "mean_error_over_thm1_1_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "source": "Theorem 1.1, eq. (1.8): E||A - QQ*A|| <= [1 + 4 sqrt(k+p)/(p-1) sqrt(min(m,n))] sigma_{k+1}"
+    },
+    {
+      "name": "mean_error_over_thm10_6_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "source": "Theorem 10.6 (average spectral error): E||(I-P_Y)A|| <= (1 + sqrt(k/(p-1))) sigma_{k+1} + e sqrt(k+p)/p (sum_{j>k} sigma_j^2)^{1/2}"
+    },
+    {
+      "name": "max_error_over_eq1_9_bound",
+      "kind": "at_most",
+      "claimed": 1.0,
+      "source": "eq. (1.9): ||A - QQ*A|| <= [1 + 11 sqrt(k+p) sqrt(min(m,n))] sigma_{k+1} with probability >= 1 - 6 p^-p"
+    },
+    {
+      "name": "power_iteration_reduces_error",
+      "kind": "qualitative",
+      "claimed": true,
+      "source": "Sec 4.5 / 10.4: the power scheme (Algorithm 4.3) with q >= 1 reduces the error when singular values decay slowly"
+    }
+  ],
+  "fidelity_notes": [
+    "- Test matrices are synthetic (the paper's numerical section uses other matrices): A = U diag(s) V^T, 400 x 300, random orthogonal U, V, with slowly decaying singular values s_j = 1/j^0.5 so that the bounds are not trivially loose.",
+    "- k = 10, p = 5 (the paper's suggested oversampling), Gaussian test matrix, 200 independent trials; \"mean error\" is the Monte-Carlo estimate of the expectation in Theorems 1.1 / 10.6, so it carries sampling noise (the ratios are far from 1, so this does not affect the verdict).",
+    "- Spectral norms are computed exactly with numpy (the paper's posterior estimator, Sec 4.3, is not used).",
+    "- Power iteration uses Algorithm 4.4 (re-orthonormalised subspace iteration) rather than plain Algorithm 4.3, as the paper recommends for floating-point stability."
+  ]
+}
