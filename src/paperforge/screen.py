@@ -31,9 +31,12 @@ def collect(cfg: dict, client: ArxivClient, hf_getter=None) -> list[Paper]:
         hf = enrich.fetch_hf_daily(**({"getter": hf_getter} if hf_getter else {}))
         extra = enrich.hf_only_ids(hf, set(papers))
         if extra:  # HF-featured papers outside today's listings, if in our categories
-            for p in client.query(id_list=extra[:50], max_results=len(extra[:50])):
-                if set(p.categories) & set(src["categories"]):
-                    papers.setdefault(p.arxiv_id, p)
+            try:
+                for p in client.query(id_list=extra[:50], max_results=len(extra[:50])):
+                    if set(p.categories) & set(src["categories"]):
+                        papers.setdefault(p.arxiv_id, p)
+            except OSError as e:
+                log.warning("arxiv lookup of HF papers failed: %s", e)
         enrich.apply_hf(list(papers.values()), hf)
     else:
         enrich.apply_hf(list(papers.values()), {})
