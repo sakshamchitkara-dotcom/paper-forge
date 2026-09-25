@@ -1,0 +1,10 @@
+[
+  {"name": "mean_error_over_thm1_1_bound", "kind": "at_most", "claimed": 1.0,
+   "source": "Theorem 1.1, eq. (1.8): E||A - QQ*A|| <= [1 + 4 sqrt(k+p)/(p-1) sqrt(min(m,n))] sigma_{k+1}"},
+  {"name": "mean_error_over_thm10_6_bound", "kind": "at_most", "claimed": 1.0,
+   "source": "Theorem 10.6 (average spectral error): E||(I-P_Y)A|| <= (1 + sqrt(k/(p-1))) sigma_{k+1} + e sqrt(k+p)/p (sum_{j>k} sigma_j^2)^{1/2}"},
+  {"name": "max_error_over_eq1_9_bound", "kind": "at_most", "claimed": 1.0,
+   "source": "eq. (1.9): ||A - QQ*A|| <= [1 + 11 sqrt(k+p) sqrt(min(m,n))] sigma_{k+1} with probability >= 1 - 6 p^-p"},
+  {"name": "power_iteration_reduces_error", "kind": "qualitative", "claimed": true,
+   "source": "Sec 4.5 / 10.4: the power scheme (Algorithm 4.3) with q >= 1 reduces the error when singular values decay slowly"}
+]

@@ -1,0 +1,4 @@
+- Test matrices are synthetic (the paper's numerical section uses other matrices): A = U diag(s) V^T, 400 x 300, random orthogonal U, V, with slowly decaying singular values s_j = 1/j^0.5 so that the bounds are not trivially loose.
+- k = 10, p = 5 (the paper's suggested oversampling), Gaussian test matrix, 200 independent trials; "mean error" is the Monte-Carlo estimate of the expectation in Theorems 1.1 / 10.6, so it carries sampling noise (the ratios are far from 1, so this does not affect the verdict).
+- Spectral norms are computed exactly with numpy (the paper's posterior estimator, Sec 4.3, is not used).
+- Power iteration uses Algorithm 4.4 (re-orthonormalised subspace iteration) rather than plain Algorithm 4.3, as the paper recommends for floating-point stability.
