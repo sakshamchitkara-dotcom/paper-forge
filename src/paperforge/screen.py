@@ -21,10 +21,16 @@ def collect(cfg: dict, client: ArxivClient, hf_getter=None) -> list[Paper]:
     papers: dict[str, Paper] = {}
     for cat in src["categories"]:
         try:
-            for p in client.recent(cat, src["max_results_per_category"], src["lookback_days"]):
-                papers.setdefault(p.arxiv_id, p)
-        except OSError as e:  # one failing category should not sink the whole day
-            log.warning("arxiv %s failed: %s", cat, e)
+            found = client.recent(cat, src["max_results_per_category"], src["lookback_days"])
+        except OSError as e:
+            log.warning("arxiv API %s failed (%s); falling back to the daily listing", cat, e)
+            try:
+                found = client.listing(cat)[:src["max_results_per_category"]]
+            except (OSError, SyntaxError) as e2:  # one failing category should not sink the whole day
+                log.warning("arxiv listing %s failed too: %s", cat, e2)
+                found = []
+        for p in found:
+            papers.setdefault(p.arxiv_id, p)
         log.info("arxiv %s: %d papers so far", cat, len(papers))
 
     if src.get("huggingface"):

@@ -24,3 +24,25 @@ def test_screen_end_to_end_offline(feed_xml, monkeypatch):
     # second run the same day: nothing new
     assert screen(cfg, store, "2026-09-26", arxiv=client, fulltext_getter=lambda u: b"",
                   hf_getter=lambda url: []) == []
+
+
+def test_collect_falls_back_to_listing_when_api_refuses(monkeypatch):
+    import urllib.error
+    from pathlib import Path
+
+    from paperforge.screen import collect
+
+    monkeypatch.setattr("paperforge.arxiv.time.sleep", lambda s: None)
+    rss = (Path(__file__).parent / "fixtures" / "arxiv_rss.xml").read_text()
+    urls = []
+
+    def opener(url):
+        urls.append(url)
+        if "export.arxiv.org" in url:
+            raise urllib.error.HTTPError(url, 406, "Not Acceptable", {}, None)
+        return rss
+
+    cfg = _merge(DEFAULTS, {"sources": {"categories": ["cs.LG"], "huggingface": False}})
+    papers = collect(cfg, ArxivClient(delay_s=0, retries=1, opener=opener))
+    assert [p.arxiv_id for p in papers] == ["2609.28553"]
+    assert urls[-1] == "https://rss.arxiv.org/atom/cs.LG" and sum("export" in u for u in urls) == 2
