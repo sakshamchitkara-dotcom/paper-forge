@@ -1,0 +1,20 @@
+# paper-forge configuration. Anything omitted falls back to paperforge/config.py DEFAULTS.
+
+[sources]
+categories = ["cs.LG", "cs.CL", "cs.IR", "stat.ML"]
+max_results_per_category = 50
+lookback_days = 2
+huggingface = true
+semantic_scholar = false   # set true (and optionally SEMANTIC_SCHOLAR_API_KEY) for citation counts
+
+[screening]
+top_k = 10
+fetch_fulltext = true
+
+[reimplement]
+enabled = false            # opt-in; the claude backend spends API tokens
+backend = "scripted"
+max_papers = 1
+max_iterations = 4
+timeout_s = 300
+sandbox = "auto"
