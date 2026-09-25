@@ -58,7 +58,8 @@ data/forge.db       # sqlite: dedupe across days + every run
 
 | source | used for | notes |
 |---|---|---|
-| `export.arxiv.org/api/query` | new submissions per category, lookups by id | at least 3 s between calls (arXiv's guidance); exponential backoff on 406/429/5xx |
+| `export.arxiv.org/api/query` | new submissions per category, lookups by id | at least 3 s between calls (arXiv's guidance); exponential backoff on 406/429/5xx; waits at least a numeric `Retry-After`; User-Agent carries the version and `FORGE_CONTACT` (email) when set |
+| `rss.arxiv.org/atom/<category>` | fallback listing when the API still fails after retries | same client and 3 s spacing; keeps first announcements only (new/cross, v1) |
 | `huggingface.co/api/daily_papers` | upvotes, `githubRepo` code links, extra candidates | open endpoint, no key |
 | Semantic Scholar batch API | citation counts (velocity) | off by default; unauthenticated calls get 429s quickly. Set `SEMANTIC_SCHOLAR_API_KEY` |
 | Papers with Code | — | its API is gone (paperswithcode.com redirects to HF trending). Code links come from HF and from GitHub URLs in the abstract/comment |
