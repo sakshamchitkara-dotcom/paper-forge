@@ -78,18 +78,19 @@ def build_results(*, paper: dict, backend: str, claims: list[dict], experiment, 
     metrics = load_metrics(metrics_path) if ran_ok else None
     comparisons = compare(claims, metrics or {}) if metrics else []
     tests_ok = None if tests is None else tests.ok
+    status = decide_status(ran_ok, metrics, comparisons, tests_ok)
     return {
         "paper": {"arxiv_id": paper["arxiv_id"], "title": paper["title"],
                   "url": f"https://arxiv.org/abs/{paper['arxiv_id']}"},
         "backend": backend,
-        "status": decide_status(ran_ok, metrics, comparisons, tests_ok),
+        "status": status,
         "tests_passed": tests_ok,
         "metrics": metrics,
         "comparisons": comparisons,
         "attempts": attempts,
         "sandbox": sandbox,
         "runtime_s": experiment.duration_s if experiment else None,
-        "error": None if ran_ok else _error(experiment, metrics_path),
+        "error": _error(experiment, metrics_path) if status == "failed" else None,
         "notes": notes or [],
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
