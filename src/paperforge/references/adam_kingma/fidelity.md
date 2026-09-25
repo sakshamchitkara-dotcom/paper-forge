@@ -1,0 +1,8 @@
+- **Dataset substituted.** The paper uses MNIST; the sandbox has no network, so we use a synthetic 10-class, 784-dimensional Gaussian-cluster dataset (6000 examples). Absolute losses are therefore not comparable with Figure 1; only the qualitative ordering of optimizers is checked.
+- Model, regulariser, batch size and schedule follow Sec 6.1: L2-regularised multinomial logistic regression (lambda = 1e-4, our choice; the paper does not state it), minibatch 128, stepsize alpha_t = alpha / sqrt(t).
+- The paper does not list per-optimizer stepsizes (Figure 1 shows tuned runs). We grid-search alpha in {1e-3, 3e-3, 1e-2, 3e-2, 1e-1, 3e-1, 1} for each optimizer and report the best, on training loss, as the paper plots training cost.
+- 10 epochs instead of 45 (Figure 1's x-axis), to keep the run under a minute.
+- "Similar convergence" is not quantified in the paper; we define it as final training loss within 10% of Nesterov SGD's.
+- The IMDB bag-of-words experiment (sparse features, dropout noise) is not reproduced.
+- Cluster separation (0.06) was chosen so the training loss lands in a range comparable to MNIST logistic regression (roughly 0.3-0.5 after 10 epochs); on an easier, nearly separable variant (0.15) Adam's loss was 17% below Nesterov's, which fails the 10% "similar" rule in the favourable direction. The verdict depends on this choice.
+- Nesterov SGD's best stepsize sits at the top of the grid (1.0); a wider grid could change its final loss.
