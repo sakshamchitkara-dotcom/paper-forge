@@ -83,6 +83,7 @@ def _run_subprocess(cmd: list[str], cwd: Path, timeout_s: float) -> tuple[int | 
         "PYTHONHASHSEED": "0",
         "MPLBACKEND": "Agg",
         "OMP_NUM_THREADS": "2",
+        "OPENBLAS_NUM_THREADS": "2",
         "NO_PROXY": "*",
     }
     proc = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -104,6 +105,7 @@ def _run_docker(cmd: list[str], cwd: Path, timeout_s: float, image: str) -> tupl
     name = f"forge-{os.getpid()}-{int(time.time() * 1000)}"
     full = ["docker", "run", "--rm", "--name", name, "--network", "none", "--memory", "2g",
             "--cpus", "2", "--pids-limit", "256", "-e", "HOME=/work", "-e", "PYTHONDONTWRITEBYTECODE=1",
+            "-e", "OMP_NUM_THREADS=2", "-e", "OPENBLAS_NUM_THREADS=2",
             "-v", f"{cwd.resolve()}:/work", "-w", "/work", image, *cmd]
     try:
         r = subprocess.run(full, capture_output=True, text=True, timeout=timeout_s)
