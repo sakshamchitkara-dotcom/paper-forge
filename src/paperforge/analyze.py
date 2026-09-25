@@ -58,9 +58,11 @@ Fill the JSON schema from the paper text you are given. Rules:
 KNOWN_DATASETS = ["MNIST", "Fashion-MNIST", "CIFAR-10", "CIFAR-100", "ImageNet", "SVHN", "UCI",
                   "Iris", "MovieLens", "MS MARCO", "BEIR", "GLUE", "SQuAD", "WikiText", "Penn Treebank",
                   "Common Crawl", "IMDB", "AG News", "OpenML", "synthetic"]
-_METRIC_RE = re.compile(
-    r"(?P<name>accuracy|F1|BLEU|ROUGE-?L?|PSNR|AUC|nDCG@?\d*|MRR|recall@?\d*|perplexity|error rate)"
-    r"[^.\d]{0,40}?(?P<value>\d+(?:\.\d+)?)\s?(?P<unit>%|dB)?", re.I)
+_NAMES = r"accuracy|F1|BLEU|ROUGE-?L?|PSNR|AUC|nDCG@?\d*|MRR|recall@?\d*|perplexity|error rate"
+_METRIC_RES = [  # "accuracy of 97.5%" and "97.5% accuracy"
+    re.compile(rf"(?P<name>{_NAMES})[^.\d]{{0,40}}?(?P<value>\d+(?:\.\d+)?)\s?(?P<unit>%|dB)?", re.I),
+    re.compile(rf"(?P<value>\d+(?:\.\d+)?)\s?(?P<unit>%|dB)?\s(?:top-1 |test |mean )?(?P<name>{_NAMES})", re.I),
+]
 
 
 def has_credentials() -> bool:
@@ -71,9 +73,13 @@ def heuristic_analysis(paper: Paper, fulltext: str, rubric: dict) -> dict:
     text = f"{paper.abstract}\n{fulltext}"
     sentences = re.split(r"(?<=[.!?])\s+", paper.abstract)
     eqs = sorted({m for m in re.findall(r"\$([^$]{8,200})\$", fulltext) if "=" in m}, key=len, reverse=True)
-    metrics = []
-    for m in _METRIC_RE.finditer(paper.abstract):
+    metrics, seen = [], set()
+    matches = sorted((m for rx in _METRIC_RES for m in rx.finditer(paper.abstract)), key=lambda m: m.start())
+    for m in matches:
         name = m.group("name")
+        if (name.lower(), m.group("value")) in seen:
+            continue
+        seen.add((name.lower(), m.group("value")))
         metrics.append({"name": name, "value": float(m.group("value")), "unit": m.group("unit") or "",
                         "higher_is_better": name.lower() not in ("perplexity", "error rate"),
                         "context": "abstract (regex extraction, unverified)"})
