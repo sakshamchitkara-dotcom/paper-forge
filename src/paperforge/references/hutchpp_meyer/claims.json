@@ -1,0 +1,16 @@
+[
+  {"name": "fro_over_trace_c2", "kind": "numeric", "claimed": 0.63, "tolerance": 0.005,
+   "source": "Sec 6.1: 'for dimension d = 5000 and c = 2, we have ||A||_F = .63 tr(A)'"},
+  {"name": "fro_over_trace_c05", "kind": "numeric", "claimed": 0.02, "tolerance": 0.005,
+   "source": "Sec 6.1: 'and for c = .5 we have ||A||_F = .02 tr(A)'"},
+  {"name": "hutchinson_loglog_slope_c05", "kind": "numeric", "claimed": -0.5, "tolerance": 0.1,
+   "source": "Sec 6.1: 'Relative error should scale roughly as eps = O(m^-gamma), where gamma = 1/2 for Hutchinson's'"},
+  {"name": "hutchpp_loglog_slope_c2", "kind": "at_most", "claimed": -0.9,
+   "source": "Sec 6.1: '... and gamma = 1 for Hutch++' (paper-forge checks the error falls at least as fast as m^-0.9)"},
+  {"name": "hutchpp_beats_hutchinson_c2", "kind": "qualitative", "claimed": true,
+   "source": "Figure 1(a) caption: 'Hutch++ and NA-Hutch++ typically outperform both methods'"},
+  {"name": "subspace_beats_hutchinson_only_at_c2", "kind": "qualitative", "claimed": true,
+   "source": "Figure 1 caption: 'Subspace Projection ... only performs better than Hutchinson's when c = 2'"},
+  {"name": "hutchpp_beats_na_hutchpp_all_c", "kind": "qualitative", "claimed": true,
+   "source": "Sec 6.1: 'the adaptivity of Hutch++ leads to consistently better performance over NA-Hutch++'"}
+]

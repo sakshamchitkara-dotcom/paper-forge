@@ -1,0 +1,7 @@
+- Estimators follow Sec 6: Hutchinson with +-1 vectors, Hutch++ (Algorithm 1, m/3 queries per step), NA-Hutch++ (Algorithm 2, c1 = c3 = 1/4, c2 = 1/2) and Subspace Projection with q = 1 (k = m/2). Each uses exactly m matrix-vector products (unit-tested).
+- **Smaller matrices.** The paper uses d = 5000 and 200 trials; the experiment uses d = 1000 and 100 trials so it runs in about 20 s on one CPU thread. The two ||A||_F / tr(A) claims are computed exactly from the d = 5000 spectrum, as in the paper.
+- The query grid m in {12, 24, 48, 96, 192, 384} is our choice (Figure 1's axis values could not be read from the text). Slopes are least-squares fits of log median relative error against log m over that grid.
+- Figure 1 is a plot, not a table. paper-forge compares methods by median relative error at the largest m (384). "Only performs better at c = 2" is checked at c in {2, 1.5, 1, 0.5}, the four panels of Figure 1.
+- gamma = 1 is the paper's rate from theory ("should scale roughly"); we check the Hutch++ slope at c = 2 is at most -0.9. It measured much steeper (about -1.9) because fast decay is the easy case for the projection step.
+- Random orthogonal Q comes from the QR of a Gaussian matrix, as in Sec 6.1. Seed fixed (0).
+- Sec 6.2 (real matrices: Estrada index, log-determinant, triangle counting) is not reproduced.

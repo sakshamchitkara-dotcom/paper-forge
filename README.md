@@ -85,7 +85,7 @@ fill the same schema. The report shows which source produced each analysis.
 
 ## Reimplementation backends
 
-**scripted (offline, no key).** Three *hand-written reference implementations* of real, classic
+**scripted (offline, no key).** Four *hand-written reference implementations* of real, classic
 papers, written by the paper-forge authors and labeled that way everywhere. Their claims were
 transcribed from the paper PDFs, and each one cites its section:
 
@@ -94,6 +94,7 @@ transcribed from the paper PDFs, and each one cites its section:
 | Neal, *MCMC using Hamiltonian dynamics* (arXiv:1206.1901) | Sec 3.3: HMC rejection rate 0.13 and random-walk Metropolis 0.75 on the 100-d Gaussian; HMC gives the better sd estimate |
 | Halko, Martinsson & Tropp, *Finding structure with randomness* (arXiv:0909.4061) | the Theorem 1.1 and Theorem 10.6 average-error bounds, the (1.9) tail bound, and the power scheme reducing the error |
 | Kingma & Ba, *Adam* (arXiv:1412.6980) | Sec 6.1 qualitative claims: Adam beats Adagrad and is similar to Nesterov SGD (synthetic stand-in for MNIST, disclosed) |
+| Meyer, Musco, Musco & Woodruff, *Hutch++* (arXiv:2010.09649) | Sec 6.1: the ‖A‖_F/tr(A) values 0.63 and 0.02, Hutchinson's m^-1/2 error rate, and the Figure 1 orderings of Hutch++, NA-Hutch++, Subspace Projection and Hutchinson (d = 1000 instead of 5000, disclosed) |
 
 **claude (opt-in, costs tokens).** Claude receives the analysis and returns a complete file set
 (method module, `test_*.py`, `experiment.py`) through a JSON schema. Files are written only if
@@ -148,6 +149,8 @@ for new papers:
 | rSVD mean error / Thm 10.6 bound | ≤ 1 | 0.122 |
 | rSVD mean error / Thm 1.1 bound | ≤ 1 | 0.028 |
 | Adam final loss vs Adagrad / Nesterov | faster / similar | 0.480 vs 1.053 / 0.445 |
+| Hutch++ ‖A‖_F/tr(A), c = 2 / c = 0.5 (Meyer §6.1) | 0.63 / 0.02 | 0.6325 / 0.0215 |
+| Hutchinson log-log error slope, c = 0.5 | ≈ -0.5 | -0.521 (d = 1000, 100 trials; measured 2026-09-25 in docker, 41 s) |
 
 The full generated site is in [`examples/2026-09-25/`](examples/2026-09-25/). Screenshots:
 [daily report](examples/daily-report-screenshot.png), [paper page](examples/paper-page-screenshot.png).
