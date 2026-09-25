@@ -123,17 +123,20 @@ A real screen of cs.LG, stat.ML and cs.IR (40 per category, plus Hugging Face da
 with no Anthropic key set, so the analyses are heuristic:
 
 ```
-$ forge -v daily --reimplement --backend scripted --day 2026-09-25
-INFO paperforge.screen: arxiv cs.LG: 40 papers so far
-INFO paperforge.screen: arxiv stat.ML: 70 papers so far
-INFO paperforge.screen: arxiv cs.IR: 100 papers so far
-INFO paperforge.screen: 112 collected, 112 new after dedupe
+$ forge -c demo.toml daily --reimplement --backend scripted --day 2026-09-25
 screened 112 new papers
 reproduced      1412.6980    scripted  Adam: A Method for Stochastic Optimization
 reproduced      1206.1901    scripted  MCMC using Hamiltonian dynamics
 reproduced      0909.4061    scripted  Finding structure with randomness: Probabilistic algorithms for constr
 report: site/daily/2026-09-25.html
+
+$ forge -c demo.toml screen --day 2026-09-26        # same listings again: dedupe
+0 new papers screened for 2026-09-26
 ```
+
+(`demo.toml` sets `categories = ["cs.LG","stat.ML","cs.IR"]`, `max_results_per_category = 40`,
+`top_k = 5`. An earlier `-v` run showed 40 + 30 + 30 papers from the three categories and 12
+more added from the HF daily list. The whole screen took 16-25 s.)
 
 Measured in the docker sandbox. The three matches here are for the hand-written references, not
 for new papers:
