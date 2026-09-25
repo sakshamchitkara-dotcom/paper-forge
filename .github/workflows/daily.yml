@@ -43,6 +43,7 @@ jobs:
       - name: Screen (and optionally reimplement)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FORGE_CONTACT: ${{ vars.FORGE_CONTACT }}   # email arXiv can reach; sent in the User-Agent
           REIMPLEMENT: ${{ inputs.reimplement || vars.FORGE_REIMPLEMENT == 'true' }}
         run: |
           if [ "$REIMPLEMENT" = "true" ]; then
