@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paper-forge"
-version = "0.1.0"
+version = "0.2.0"
 description = "Daily research screener that picks reproducible papers and forges reference implementations with honest reproduction reports."
 readme = "README.md"
 requires-python = ">=3.10"
