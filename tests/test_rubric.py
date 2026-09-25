@@ -32,3 +32,12 @@ def test_scores_are_bounded_and_serialisable(feed_xml):
         d = score_paper(p, W, KW).to_dict()
         assert 0 <= d["total"] <= 100
         assert all(0 <= c["score"] <= 1 for c in d["criteria"].values())
+
+
+def test_survey_penalty_ignores_related_work_in_fulltext(feed_xml):
+    adam = parse_feed(feed_xml)[0]
+    plain = score_paper(adam, W, KW, fulltext="Algorithm 1")
+    related = score_paper(adam, W, KW, fulltext="Algorithm 1. See the survey of Ruder (2016).")
+    assert related.criteria["clarity"].score == plain.criteria["clarity"].score
+    adam.abstract = "This survey reviews optimizers."
+    assert any("survey" in e for e in score_paper(adam, W, KW).criteria["clarity"].evidence)
